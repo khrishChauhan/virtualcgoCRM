@@ -157,6 +157,7 @@ model Task {
   // ── Status & Timeline ─────────────────────────────────────
   status         TaskStatus @default(PENDING)
   deadline       DateTime?
+  serviceType    ServiceType?
 
   // ── Relations ─────────────────────────────────────────────
   leadId         String

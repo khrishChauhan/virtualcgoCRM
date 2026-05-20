@@ -99,11 +99,11 @@ export function apiError(
  *   export const POST = withErrorHandler(async (req) => { ... });
  */
 export function withErrorHandler(
-  handler: (req: Request) => Promise<NextResponse>
+  handler: (req: any, ...args: any[]) => Promise<NextResponse>
 ) {
-  return async (req: Request): Promise<NextResponse> => {
+  return async (req: any, ...args: any[]): Promise<NextResponse> => {
     try {
-      return await handler(req);
+      return await handler(req, ...args);
     } catch (err) {
       if (err instanceof ApiError) {
         return apiError(err.message, err.statusCode);
