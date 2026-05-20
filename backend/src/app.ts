@@ -6,6 +6,8 @@ import morgan from 'morgan';
 import { errorHandler } from './middleware/errorHandler';
 import { notFound } from './middleware/notFound';
 import healthRouter from './routes/health.routes';
+import authRouter from './routes/auth.routes';
+import protectedRouter from './routes/protected.routes';
 
 const app: Application = express();
 
@@ -35,6 +37,8 @@ if (process.env.NODE_ENV !== 'test') {
 const API_VERSION = process.env.API_VERSION || 'v1';
 
 app.use(`/api/${API_VERSION}/health`, healthRouter);
+app.use(`/api/${API_VERSION}/auth`, authRouter);
+app.use(`/api/${API_VERSION}/protected`, protectedRouter);
 
 // ─── 404 & Error Handling ─────────────────────────────────────────────────────
 app.use(notFound);
