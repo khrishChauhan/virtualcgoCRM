@@ -1,24 +1,217 @@
-// ─────────────────────────────────────────────────────────────────────────────
+// =============================================================================
 // VirtualCGO — Prisma Schema
-// Phase 1: Datasource & Generator only.
-// Database models will be added in Phase 2 (auth, CRM entities, etc.)
-// ─────────────────────────────────────────────────────────────────────────────
+// Phase 2: Core Database Architecture
+// =============================================================================
+// Architecture decisions:
+//
+// 1. RBAC via Role enum on User — simple, fast, no extra join for MVP.
+//    Scale path: extract to Permission table + role-permission join when
+//    fine-grained access control is needed beyond 4 roles.
+//
+// 2. Lead owns all client discovery data. Task is a child of Lead so every
+//    task always has business context without a second lookup.
+//
+// 3. ActivityLog is append-only and never updated — ideal for audit trails.
+//    No foreign key constraints on entityId so deleted entities stay in the
+//    log. entityType acts as a discriminator.
+//
+// 4. All tables carry createdAt/updatedAt managed by Prisma @updatedAt — no
+//    need for DB triggers.
+//
+// 5. Indexes are placed on every FK and every column used in WHERE clauses
+//    across the expected query patterns (filter leads by status/owner,
+//    filter tasks by assignee/status/lead).
+// =============================================================================
 
 generator client {
   provider = "prisma-client-js"
-  // Output to backend so the generated client is co-located with the app
-  output   = "../backend/node_modules/@prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Phase 2 models will go here:
-//   - User, Role, Permission  (Auth)
-//   - Organization, Client    (CRM Core)
-//   - Project, Task           (Operations)
-//   - Invoice, Payment        (Finance)
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  SUPER_ADMIN
+  TECH_ADMIN
+  SALES_ADMIN
+  STAFF
+}
+
+enum LeadStatus {
+  NEW            // Just created by sales admin
+  CONTACTED      // First contact made
+  QUALIFIED      // Verified as a real opportunity
+  PROPOSAL_SENT  // Proposal delivered to client
+  IN_PROGRESS    // Work has started (tasks assigned)
+  WON            // Deal closed successfully
+  LOST           // Deal did not close
+  ON_HOLD        // Paused for any reason
+}
+
+enum TaskStatus {
+  PENDING        // Created, not yet started
+  IN_PROGRESS    // Staff is actively working
+  REVIEW         // Submitted for tech admin review
+  COMPLETED      // Approved and done
+  CANCELLED      // Dropped / no longer needed
+}
+
+enum ServiceType {
+  SOCIAL_MEDIA_MANAGEMENT
+  CONTENT_CREATION
+  GRAPHIC_DESIGN
+  VIDEO_EDITING
+  SEO
+  PAID_ADS
+  WEB_DEVELOPMENT
+  EMAIL_MARKETING
+  BRANDING
+  PHOTOGRAPHY
+  OTHER
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+/// Every person who can log in to the system.
+/// Role determines what they can see and do (enforced at API layer).
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // bcrypt hashed — set in Phase 3 (Auth)
+  role      Role     @default(STAFF)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  createdLeads   Lead[]        @relation("LeadCreatedBy")
+  assignedTasks  Task[]        @relation("TaskAssignedTo")
+  assignedByMe   Task[]        @relation("TaskAssignedBy")
+  activityLogs   ActivityLog[]
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+/// A Lead represents a potential client brought in by a Sales Admin.
+/// It holds all discovery / onboarding info needed to start work.
+model Lead {
+  id                  String      @id @default(cuid())
+
+  // ── Client Identity ────────────────────────────────────────
+  ownerName           String
+  businessEmail       String
+  phone               String?
+  businessAddress     String?
+  businessCategory    String?
+
+  // ── Brand Assets ──────────────────────────────────────────
+  brandColors         String?     // Comma-separated hex codes, e.g. "#FF5733,#2C3E50"
+  logoLink            String?     // URL to logo file (Google Drive / CDN)
+  driveLink           String?     // Master assets folder
+
+  // ── Online Presence ───────────────────────────────────────
+  instagramLink       String?
+  facebookLink        String?
+  linkedinLink        String?
+
+  // ── Business Context ──────────────────────────────────────
+  businessDescription String?
+  requiredServices    ServiceType[] // Multi-select — stored as Postgres array
+
+  // ── Workflow ──────────────────────────────────────────────
+  status              LeadStatus  @default(NEW)
+  createdById         String
+  createdBy           User        @relation("LeadCreatedBy", fields: [createdById], references: [id])
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  // Relations
+  tasks               Task[]
+  activityLogs        ActivityLog[]
+
+  @@index([status])
+  @@index([createdById])
+  @@index([businessEmail])
+  @@map("leads")
+}
+
+/// A Task is a unit of work created by a Tech Admin for a Staff member,
+/// always linked to a specific Lead so context is never lost.
+model Task {
+  id             String     @id @default(cuid())
+
+  // ── Content ───────────────────────────────────────────────
+  title          String
+  description    String?
+  notes          String?    // Additional instructions, feedback, etc.
+
+  // ── Status & Timeline ─────────────────────────────────────
+  status         TaskStatus @default(PENDING)
+  deadline       DateTime?
+
+  // ── Relations ─────────────────────────────────────────────
+  leadId         String
+  lead           Lead       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  assignedToId   String
+  assignedTo     User       @relation("TaskAssignedTo", fields: [assignedToId], references: [id])
+
+  assignedById   String
+  assignedBy     User       @relation("TaskAssignedBy", fields: [assignedById], references: [id])
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  activityLogs   ActivityLog[]
+
+  @@index([status])
+  @@index([leadId])
+  @@index([assignedToId])
+  @@index([assignedById])
+  @@index([deadline])
+  @@map("tasks")
+}
+
+/// Append-only audit log. Records who did what to which entity and when.
+/// entityType is a string discriminator ("Lead", "Task", "User") so the
+/// same table covers all resources without complex polymorphic FKs.
+model ActivityLog {
+  id          String   @id @default(cuid())
+
+  // What happened
+  action      String   // e.g. "LEAD_CREATED", "TASK_STATUS_CHANGED", "LEAD_ASSIGNED"
+  entityType  String   // "Lead" | "Task" | "User"
+  entityId    String   // The id of the affected record
+
+  // Context snapshot (optional JSON for before/after values)
+  metadata    Json?
+
+  // Who did it
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  // Optional: link directly to a Lead or Task for faster scoped queries
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  taskId      String?
+  task        Task?    @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@index([leadId])
+  @@index([taskId])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
