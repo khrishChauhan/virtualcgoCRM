@@ -1,0 +1,24 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// VirtualCGO — Prisma Schema
+// Phase 1: Datasource & Generator only.
+// Database models will be added in Phase 2 (auth, CRM entities, etc.)
+// ─────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+  // Output to backend so the generated client is co-located with the app
+  output   = "../backend/node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 2 models will go here:
+//   - User, Role, Permission  (Auth)
+//   - Organization, Client    (CRM Core)
+//   - Project, Task           (Operations)
+//   - Invoice, Payment        (Finance)
+// ─────────────────────────────────────────────────────────────────────────────
