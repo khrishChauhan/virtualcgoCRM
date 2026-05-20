@@ -2,15 +2,20 @@
  * VirtualCGO — Database Seed Script
  * ──────────────────────────────────
  * Creates the default system users for all roles.
- * Run from backend/: npx ts-node src/scripts/seed.ts
+ * Run from frontend/: npm run db:seed
  *
  * ⚠️ Safe to re-run — uses upsert so existing users are not duplicated.
  */
 
-import 'dotenv/config';
+import { PrismaClient, Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { Role } from '@prisma/client';
-import prisma from '../prisma/client';
+import * as dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env.local
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+
+const prisma = new PrismaClient();
 
 interface SeedUser {
   name: string;
@@ -50,7 +55,6 @@ async function seed() {
     const user = await prisma.user.upsert({
       where: { email: userData.email },
       update: {
-        // Update role and name on re-run, but do NOT change password if already set
         name: userData.name,
         role: userData.role,
       },
