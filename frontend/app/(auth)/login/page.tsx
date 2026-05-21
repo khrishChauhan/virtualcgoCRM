@@ -29,7 +29,7 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message ?? 'Login failed. Please try again.');
+        setError(data.message ?? 'Login failed. Please verify your credentials.');
         return;
       }
 
@@ -43,100 +43,110 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#f8fafc] text-slate-900 selection:bg-[#abc4ff] selection:text-slate-900">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#fafcff] text-slate-900 selection:bg-[#abc4ff]/40 selection:text-slate-900 font-sans">
       
-      {/* Subtle Mesh / Radial Background */}
-      <div className="pointer-events-none absolute inset-0 z-0 flex justify-center">
-        <div className="absolute -top-[20%] w-[800px] h-[600px] rounded-full bg-[#e2eafc] opacity-50 blur-[120px]" />
-        <div className="absolute top-[20%] -left-[10%] w-[500px] h-[500px] rounded-full bg-[#c1d3fe] opacity-30 blur-[100px]" />
+      {/* Premium Ambient Background Mesh */}
+      <div className="pointer-events-none absolute inset-0 z-0 flex justify-center overflow-hidden">
+        {/* Soft primary glow */}
+        <div className="absolute -top-[10%] w-[1000px] h-[600px] rounded-[100%] bg-gradient-to-b from-[#e2eafc]/60 to-transparent opacity-80 blur-[80px]" />
+        {/* Secondary accent glow */}
+        <div className="absolute top-[30%] -left-[20%] w-[600px] h-[600px] rounded-[100%] bg-[#c1d3fe]/30 blur-[120px]" />
+        <div className="absolute top-[20%] -right-[20%] w-[500px] h-[500px] rounded-[100%] bg-[#abc4ff]/20 blur-[100px]" />
       </div>
 
       {/* Header (Absolute Top) */}
-      <header className="absolute top-0 w-full px-6 py-6 z-10">
+      <header className="absolute top-0 w-full px-8 py-8 z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-[#abc4ff] shadow-sm">
-              <span className="material-symbols-outlined text-[14px] text-white">hub</span>
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-b from-[#abc4ff] to-[#8dafff] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_2px_4px_rgba(171,196,255,0.3)]">
+              <span className="material-symbols-outlined text-[16px] text-white">hub</span>
             </div>
-            <span className="text-sm font-bold tracking-tight text-slate-800">VirtualCGO</span>
+            <span className="text-[15px] font-bold tracking-tight text-slate-800">VirtualCGO</span>
           </div>
-          <div className="flex items-center gap-2 text-slate-500">
+          <div className="flex items-center gap-2 text-slate-400">
             <span className="material-symbols-outlined text-[16px]">lock</span>
-            <span className="text-xs font-medium uppercase tracking-wider">Enterprise Access</span>
+            <span className="text-[11px] font-semibold uppercase tracking-widest">Enterprise Secure</span>
           </div>
         </div>
       </header>
 
       {/* Main Login Container */}
-      <main className="relative z-10 w-full max-w-[400px] px-4">
+      <main className="relative z-10 w-full max-w-[420px] px-5 pb-16">
         
         {/* Title Area */}
         <div className="mb-8 text-center">
-          <h1 className="mb-2 text-2xl font-semibold tracking-tight text-slate-900">
-            Log in to your account
+          <h1 className="mb-2.5 text-[28px] font-semibold tracking-[-0.02em] text-slate-900">
+            Welcome back
           </h1>
-          <p className="text-sm text-slate-500">
-            Enter your credentials to access the operations dashboard.
+          <p className="text-[15px] text-slate-500">
+            Sign in to your operations dashboard.
           </p>
         </div>
 
-        {/* The Card */}
-        <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/70 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {/* The Card - Quiet Luxury Glassmorphism */}
+        <div className="group relative overflow-hidden rounded-[24px] bg-white/70 p-10 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.12)] backdrop-blur-2xl transition-all duration-500 hover:shadow-[0_4px_8px_rgba(0,0,0,0.02),0_16px_56px_rgba(171,196,255,0.16)] before:absolute before:inset-0 before:-z-10 before:rounded-[24px] before:border before:border-white/80 before:shadow-[inset_0_1px_1px_rgba(255,255,255,1)]">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             
             {/* Error Message */}
             {error && (
-              <div className="flex items-start gap-3 rounded-xl bg-red-50/50 p-4 border border-red-100">
-                <span className="material-symbols-outlined mt-0.5 text-[18px] text-red-500">info</span>
-                <p className="text-sm font-medium text-red-800">{error}</p>
+              <div className="flex items-start gap-3 rounded-2xl bg-red-50/80 p-4 border border-red-100/50 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 ease-out">
+                <span className="material-symbols-outlined mt-0.5 text-[18px] text-red-500">error</span>
+                <p className="text-[13px] font-medium leading-relaxed text-red-800">{error}</p>
               </div>
             )}
 
-            {/* Email Input */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-xs font-semibold text-slate-700">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="name@company.com"
-                required
-                autoComplete="email"
-                className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-2.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:bg-white focus:border-[#abc4ff] focus:bg-white focus:ring-4 focus:ring-[#abc4ff]/20"
-              />
-            </div>
-
-            {/* Password Input */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-xs font-semibold text-slate-700">
-                  Password
+            {/* Input Group */}
+            <div className="flex flex-col gap-5">
+              
+              {/* Email Input */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="email" className="text-[13px] font-medium text-slate-700">
+                  Email
                 </label>
-                <Link href="#" className="text-xs font-medium text-slate-500 hover:text-[#abc4ff] transition-colors">
-                  Forgot password?
-                </Link>
+                <div className="relative group/input">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="name@company.com"
+                    required
+                    autoComplete="email"
+                    className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]"
+                  />
+                </div>
               </div>
-              <div className="relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  required
-                  autoComplete="current-password"
-                  className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-2.5 pr-10 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:bg-white focus:border-[#abc4ff] focus:bg-white focus:ring-4 focus:ring-[#abc4ff]/20"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[18px]">
-                    {showPassword ? 'visibility_off' : 'visibility'}
-                  </span>
-                </button>
+
+              {/* Password Input */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="text-[13px] font-medium text-slate-700">
+                    Password
+                  </label>
+                  <Link href="#" className="text-[13px] font-medium text-slate-400 transition-colors hover:text-[#abc4ff]">
+                    Forgot password?
+                  </Link>
+                </div>
+                <div className="relative group/input">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    required
+                    autoComplete="current-password"
+                    className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 pr-10 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] tracking-wide"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600 focus:outline-none"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    <span className="material-symbols-outlined text-[18px]">
+                      {showPassword ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -144,12 +154,12 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
+              className="mt-2 relative flex w-full items-center justify-center gap-2 rounded-[14px] bg-[#0f172a] px-4 py-3.5 text-[14px] font-medium text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
             >
               {isSubmitting ? (
                 <>
                   <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
-                  Signing in...
+                  Authenticating...
                 </>
               ) : (
                 'Sign In'
@@ -159,20 +169,16 @@ export default function LoginPage() {
         </div>
 
         {/* Footer Links */}
-        <p className="mt-8 text-center text-xs font-medium text-slate-500">
-          Don&apos;t have an account?{' '}
-          <Link href="#" className="text-slate-800 hover:text-[#abc4ff] transition-colors">
-            Contact your administrator
-          </Link>
-        </p>
+        <div className="mt-8 flex justify-center">
+          <p className="text-[13px] text-slate-500">
+            Need access?{' '}
+            <Link href="#" className="font-medium text-slate-700 transition-colors hover:text-[#abc4ff]">
+              Contact your administrator
+            </Link>
+          </p>
+        </div>
       </main>
 
-      {/* Global Footer (Absolute Bottom) */}
-      <footer className="absolute bottom-6 w-full text-center z-10">
-        <p className="text-xs text-slate-400 font-medium">
-          Protected by enterprise-grade encryption.
-        </p>
-      </footer>
     </div>
   );
 }
