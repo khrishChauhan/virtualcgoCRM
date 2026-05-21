@@ -6,8 +6,9 @@ import { redirect } from 'next/navigation';
 import { Role } from '@prisma/client';
 import Link from 'next/link';
 
-export default async function NewTaskPage() {
+export default async function NewTaskPage({ searchParams }: { searchParams: Promise<{ leadId?: string }> }) {
   const user = await getAuthUser();
+  const { leadId } = await searchParams;
 
   if (user.role !== Role.TECH_ADMIN && user.role !== Role.SUPER_ADMIN) {
     redirect('/dashboard');
@@ -47,7 +48,7 @@ export default async function NewTaskPage() {
         <p className="text-on-surface-variant font-medium mt-1">Assign a new operational task to a staff member.</p>
       </div>
 
-      <TaskForm leads={leads} staff={staff} />
+      <TaskForm leads={leads} staff={staff} prefilledLeadId={leadId} />
     </>
   );
 }

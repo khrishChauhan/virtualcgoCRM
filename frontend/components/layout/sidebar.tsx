@@ -6,9 +6,11 @@ import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
   userRole?: string;
+  userName?: string;
+  userEmail?: string;
 }
 
-export function Sidebar({ userRole = 'STAFF' }: SidebarProps) {
+export function Sidebar({ userRole = 'STAFF', userName = 'Current User', userEmail = 'user@company.com' }: SidebarProps) {
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname?.startsWith(path);
@@ -83,27 +85,45 @@ export function Sidebar({ userRole = 'STAFF' }: SidebarProps) {
             </Link>
           )}
 
-          <Link
-            href="/dashboard/settings"
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
-              isActive('/dashboard/settings')
-                ? 'bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-[0.98]'
-                : 'text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant'
-            }`}
-          >
-            <span className="material-symbols-outlined">settings</span>
-            <span className="font-label">Settings</span>
-          </Link>
+          {/* Staff Management - Tech & Super Admin */}
+          {(userRole === 'TECH_ADMIN' || userRole === 'SUPER_ADMIN') && (
+            <Link
+              href="/dashboard/staff"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
+                isActive('/dashboard/staff')
+                  ? 'bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-[0.98]'
+                  : 'text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant'
+              }`}
+            >
+              <span className="material-symbols-outlined">badge</span>
+              <span className="font-label">Staff Management</span>
+            </Link>
+          )}
+
+          {/* User Management - Super Admin Only */}
+          {userRole === 'SUPER_ADMIN' && (
+            <Link
+              href="/dashboard/users"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
+                isActive('/dashboard/users')
+                  ? 'bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary scale-[0.98]'
+                  : 'text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-variant'
+              }`}
+            >
+              <span className="material-symbols-outlined">admin_panel_settings</span>
+              <span className="font-label">User Management</span>
+            </Link>
+          )}
         </nav>
 
         {/* Bottom CTA and Profile */}
         <div className="mt-auto flex flex-col gap-4">
           <div className="flex items-center gap-3 p-2 rounded-lg bg-surface-container-low">
-            <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-on-primary-fixed border border-outline-variant">
-              {userRole.substring(0, 2).toUpperCase()}
+            <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-on-primary-fixed border border-outline-variant uppercase">
+              {userName.substring(0, 2)}
             </div>
             <div className="overflow-hidden flex-grow">
-              <p className="text-sm font-bold truncate">Current User</p>
+              <p className="text-sm font-bold truncate">{userName}</p>
               <p className="text-xs text-on-surface-variant truncate capitalize">{userRole.replace('_', ' ').toLowerCase()}</p>
             </div>
             <button

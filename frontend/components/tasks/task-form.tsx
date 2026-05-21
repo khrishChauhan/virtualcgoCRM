@@ -17,9 +17,10 @@ interface StaffOption {
 interface TaskFormProps {
   leads: LeadOption[];
   staff: StaffOption[];
+  prefilledLeadId?: string;
 }
 
-export function TaskForm({ leads, staff }: TaskFormProps) {
+export function TaskForm({ leads, staff, prefilledLeadId }: TaskFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -79,8 +80,13 @@ export function TaskForm({ leads, staff }: TaskFormProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-bold text-on-surface-variant mb-2">Assign to Lead / Client *</label>
-          <select required name="leadId" className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
-            <option value="">Select a Lead</option>
+          <select 
+            required 
+            name="leadId" 
+            defaultValue={prefilledLeadId || ""}
+            className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm"
+          >
+            <option value="" disabled>Select a lead...</option>
             {leads.map((l) => (
               <option key={l.id} value={l.id}>{l.ownerName} ({l.businessEmail})</option>
             ))}

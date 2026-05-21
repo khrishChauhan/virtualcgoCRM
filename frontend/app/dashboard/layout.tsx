@@ -16,17 +16,33 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   let role: string;
+  let userName: string;
+  let userEmail: string;
+
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? '');
     const { payload } = await jwtVerify(token, secret);
-    role = (payload as any).role as string;
-    if (!role) redirect('/login');
+    
+    // We need to fetch the real user name and email from the DB
+    // since the JWT might only contain the ID and role
+    const { PrismaClient } = await import('@prisma/client');
+    const prisma = new PrismaClient();
+    const user = await prisma.user.findUnique({
+      where: { id: (payload as any).userId },
+      select: { name: true, email: true, role: true }
+    });
+
+    if (!user) redirect('/login');
+    
+    role = user.role;
+    userName = user.name;
+    userEmail = user.email;
   } catch {
     redirect('/login');
   }
 
   return (
-    <DashboardShell userRole={role!}>
+    <DashboardShell userRole={role} userName={userName} userEmail={userEmail}>
       {children}
     </DashboardShell>
   );
