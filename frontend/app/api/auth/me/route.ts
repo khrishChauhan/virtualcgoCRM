@@ -15,6 +15,7 @@ import { verifyToken, AUTH_COOKIE_NAME } from '@/lib/auth';
 import { ApiError, apiSuccess, apiError } from '@/lib/api-response';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function GET(_req: NextRequest): Promise<NextResponse> {
   try {

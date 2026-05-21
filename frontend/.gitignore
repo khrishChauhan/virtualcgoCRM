@@ -30,8 +30,13 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — secrets must NEVER be committed
+# Add your real values to Vercel's dashboard: Settings > Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+# .env.example is safe to commit (no real secrets)
 
 # vercel
 .vercel

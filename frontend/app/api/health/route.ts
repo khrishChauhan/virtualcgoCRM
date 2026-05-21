@@ -10,7 +10,8 @@
 
 import { NextResponse } from 'next/server';
 
-export const runtime = 'nodejs'; // Use Node.js runtime (not Edge)
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function GET(): Promise<NextResponse> {
   const uptime = process.uptime();

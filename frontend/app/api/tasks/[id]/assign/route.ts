@@ -5,6 +5,7 @@ import { ApiError, apiSuccess, withErrorHandler } from '@/lib/api-response';
 import { Role } from '@prisma/client';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // ─── PUT /api/tasks/[id]/assign ──────────────────────────────────────────────
 

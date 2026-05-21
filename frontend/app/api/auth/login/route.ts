@@ -21,7 +21,8 @@ import { signToken, buildAuthCookie } from '@/lib/auth';
 import { ApiError, apiSuccess, apiError } from '@/lib/api-response';
 import type { LoginRequestBody, LoginResponse } from '@/types/auth';
 
-export const runtime = 'nodejs'; // bcryptjs requires Node.js runtime
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic'; // never cache — auth-sensitive
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
