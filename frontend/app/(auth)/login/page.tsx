@@ -23,7 +23,6 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // credentials: 'same-origin' is default — cookie will be set automatically
         body: JSON.stringify({ email, password }),
       });
 
@@ -34,7 +33,6 @@ export default function LoginPage() {
         return;
       }
 
-      // Cookie is set by the server (HttpOnly) — just redirect
       router.push('/dashboard');
       router.refresh();
     } catch {
@@ -45,129 +43,135 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen text-on-surface">
-      {/* TopNavBar */}
-      <header className="flex items-center justify-center w-full px-8 py-6 bg-transparent font-display text-label-sm fixed top-0 z-50">
-        <div className="max-w-7xl w-full flex justify-between items-center">
-          <div className="text-2xl font-black tracking-tight text-primary">VirtualCGO</div>
-          <div className="flex items-center gap-4">
-            <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>security</span>
-            <span className="text-primary font-bold">Secure Access</span>
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#f8fafc] text-slate-900 selection:bg-[#abc4ff] selection:text-slate-900">
+      
+      {/* Subtle Mesh / Radial Background */}
+      <div className="pointer-events-none absolute inset-0 z-0 flex justify-center">
+        <div className="absolute -top-[20%] w-[800px] h-[600px] rounded-full bg-[#e2eafc] opacity-50 blur-[120px]" />
+        <div className="absolute top-[20%] -left-[10%] w-[500px] h-[500px] rounded-full bg-[#c1d3fe] opacity-30 blur-[100px]" />
+      </div>
+
+      {/* Header (Absolute Top) */}
+      <header className="absolute top-0 w-full px-6 py-6 z-10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-[#abc4ff] shadow-sm">
+              <span className="material-symbols-outlined text-[14px] text-white">hub</span>
+            </div>
+            <span className="text-sm font-bold tracking-tight text-slate-800">VirtualCGO</span>
+          </div>
+          <div className="flex items-center gap-2 text-slate-500">
+            <span className="material-symbols-outlined text-[16px]">lock</span>
+            <span className="text-xs font-medium uppercase tracking-wider">Enterprise Access</span>
           </div>
         </div>
       </header>
 
-      {/* Main Content Canvas */}
-      <main className="flex-grow flex items-center justify-center px-4 pt-20 pb-12">
-        <div className="w-full max-w-[440px] animate-in fade-in slide-in-from-bottom-4 duration-700">
-
-          {/* Branding / Identity */}
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-container text-on-primary-container mb-6 shadow-sm">
-              <span className="material-symbols-outlined text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>hub</span>
-            </div>
-            <h1 className="font-headline text-3xl font-extrabold text-on-primary-fixed mb-2">Welcome Back</h1>
-            <p className="text-on-surface-variant font-label">Enter your credentials to access your dashboard</p>
-          </div>
-
-          {/* Login Card */}
-          <div className="glass-card p-8 md:p-10 rounded-xl shadow-[0_20px_50px_rgba(69,94,146,0.08)] border border-surface-container">
-            <form className="space-y-6" onSubmit={handleSubmit}>
-
-              {/* Error Alert */}
-              {error && (
-                <div className="flex items-start gap-3 p-4 bg-error-container rounded-lg border border-error/20">
-                  <span className="material-symbols-outlined text-error text-[20px] flex-shrink-0 mt-0.5">error</span>
-                  <p className="text-sm font-medium text-on-error-container">{error}</p>
-                </div>
-              )}
-
-              {/* Email Field */}
-              <div className="space-y-2">
-                <label className="block text-label-sm font-semibold text-on-surface-variant" htmlFor="email">Email Address</label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">mail</span>
-                  <input
-                    className="w-full pl-11 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary-container focus:border-primary transition-all duration-200 outline-none placeholder:text-outline-variant"
-                    id="email"
-                    name="email"
-                    placeholder="name@company.com"
-                    required
-                    type="email"
-                    autoComplete="email"
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label className="block text-label-sm font-semibold text-on-surface-variant" htmlFor="password">Password</label>
-                  <Link href="#" className="text-label-sm font-bold text-primary hover:text-on-primary-container transition-colors">Forgot Password?</Link>
-                </div>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
-                  <input
-                    className="w-full pl-11 pr-12 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary-container focus:border-primary transition-all duration-200 outline-none placeholder:text-outline-variant"
-                    id="password"
-                    name="password"
-                    placeholder="••••••••"
-                    required
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete="current-password"
-                  />
-                  <button
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary"
-                    onClick={() => setShowPassword(!showPassword)}
-                    type="button"
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  >
-                    <span className="material-symbols-outlined text-[20px]">{showPassword ? 'visibility_off' : 'visibility'}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Sign In Button */}
-              <button
-                disabled={isSubmitting}
-                className="w-full py-4 bg-primary-container text-on-primary-container font-bold rounded-lg hover:brightness-95 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
-                type="submit"
-                id="login-submit-btn"
-              >
-                {isSubmitting ? (
-                  <><span className="material-symbols-outlined animate-spin">refresh</span>Signing in...</>
-                ) : (
-                  <><span>Sign In</span><span className="material-symbols-outlined text-[18px]">arrow_forward</span></>
-                )}
-              </button>
-            </form>
-
-            {/* Signup Link */}
-            <p className="mt-10 text-center text-label-sm text-on-surface-variant font-label">
-              Don&apos;t have an account?{' '}
-              <Link href="#" className="text-primary font-bold hover:underline ml-1">Contact your admin</Link>
-            </p>
-          </div>
-
-          {/* Trust Badge */}
-          <div className="mt-12 flex flex-col items-center gap-4 text-outline text-label-sm opacity-60">
-            <p className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">lock_person</span>
-              AES-256 Enterprise Grade Encryption
-            </p>
-          </div>
+      {/* Main Login Container */}
+      <main className="relative z-10 w-full max-w-[400px] px-4">
+        
+        {/* Title Area */}
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-2xl font-semibold tracking-tight text-slate-900">
+            Log in to your account
+          </h1>
+          <p className="text-sm text-slate-500">
+            Enter your credentials to access the operations dashboard.
+          </p>
         </div>
+
+        {/* The Card */}
+        <div className="overflow-hidden rounded-2xl border border-white/60 bg-white/70 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            
+            {/* Error Message */}
+            {error && (
+              <div className="flex items-start gap-3 rounded-xl bg-red-50/50 p-4 border border-red-100">
+                <span className="material-symbols-outlined mt-0.5 text-[18px] text-red-500">info</span>
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            )}
+
+            {/* Email Input */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-xs font-semibold text-slate-700">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="name@company.com"
+                required
+                autoComplete="email"
+                className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-2.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:bg-white focus:border-[#abc4ff] focus:bg-white focus:ring-4 focus:ring-[#abc4ff]/20"
+              />
+            </div>
+
+            {/* Password Input */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="password" className="text-xs font-semibold text-slate-700">
+                  Password
+                </label>
+                <Link href="#" className="text-xs font-medium text-slate-500 hover:text-[#abc4ff] transition-colors">
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  required
+                  autoComplete="current-password"
+                  className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-2.5 pr-10 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 hover:bg-white focus:border-[#abc4ff] focus:bg-white focus:ring-4 focus:ring-[#abc4ff]/20"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    {showPassword ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-medium text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+                  Signing in...
+                </>
+              ) : (
+                'Sign In'
+              )}
+            </button>
+          </form>
+        </div>
+
+        {/* Footer Links */}
+        <p className="mt-8 text-center text-xs font-medium text-slate-500">
+          Don&apos;t have an account?{' '}
+          <Link href="#" className="text-slate-800 hover:text-[#abc4ff] transition-colors">
+            Contact your administrator
+          </Link>
+        </p>
       </main>
 
-      {/* Footer */}
-      <footer className="flex flex-col md:flex-row items-center justify-center gap-6 w-full py-10 px-4 bg-transparent font-label text-label-sm">
-        <div className="text-on-surface-variant order-2 md:order-1">
-          © 2024 VirtualCGO. All rights reserved.
-        </div>
-        <div className="flex gap-6 order-1 md:order-2">
-          <Link href="#" className="text-on-surface-variant hover:text-primary transition-colors duration-200">Privacy Policy</Link>
-          <Link href="#" className="text-on-surface-variant hover:text-primary transition-colors duration-200">Terms of Service</Link>
-        </div>
+      {/* Global Footer (Absolute Bottom) */}
+      <footer className="absolute bottom-6 w-full text-center z-10">
+        <p className="text-xs text-slate-400 font-medium">
+          Protected by enterprise-grade encryption.
+        </p>
       </footer>
     </div>
   );
