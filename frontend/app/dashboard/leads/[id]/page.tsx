@@ -32,20 +32,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   }
 
   return (
-    <>
-      <div className="mb-8">
-        <Link href="/dashboard/leads" className="text-sm font-bold text-primary hover:underline flex items-center gap-1 mb-4">
-          <span className="material-symbols-outlined text-sm">arrow_back</span>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+      <div className="mb-12">
+        <Link href="/dashboard/leads" className="text-[13px] font-semibold text-[#abc4ff] hover:text-slate-900 transition-colors flex items-center gap-1.5 mb-6">
+          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           Back to Leads
         </Link>
         <div className="flex justify-between items-start">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-3xl font-black text-primary tracking-tight">{lead.ownerName}</h2>
+            <div className="flex items-center gap-4 mb-2">
+              <h2 className="text-[32px] font-bold text-slate-900 tracking-tight">{lead.ownerName}</h2>
               <LeadStatusBadge status={lead.status} />
             </div>
-            <p className="text-on-surface-variant font-medium flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">mail</span>
+            <p className="text-[15px] text-slate-500 font-medium flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px] text-slate-400">mail</span>
               {lead.businessEmail}
             </p>
           </div>
@@ -53,87 +53,89 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           {(user.role === Role.TECH_ADMIN || user.role === Role.SUPER_ADMIN) && (
             <Link
               href={`/dashboard/tasks/new?leadId=${lead.id}`}
-              className="flex items-center gap-2 px-6 py-3 bg-secondary text-on-secondary font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+              className="relative flex items-center justify-center gap-2 rounded-[12px] bg-[#0f172a] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98]"
             >
-              <span className="material-symbols-outlined text-sm">assignment_add</span>
+              <span className="material-symbols-outlined text-[18px]">assignment_add</span>
               Create Task from Lead
             </Link>
           )}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Details */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-surface-container-lowest border border-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-bold text-on-surface mb-6 border-b border-outline-variant/30 pb-3">Business Overview</h3>
-            <div className="grid grid-cols-2 gap-6">
+        <div className="lg:col-span-2 space-y-8">
+          <div className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-8">
+            <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight mb-6 border-b border-slate-100 pb-4">Business Overview</h3>
+            <div className="grid grid-cols-2 gap-y-6 gap-x-10">
               <div>
-                <p className="text-xs font-label text-on-surface-variant mb-1">Category</p>
-                <p className="font-medium text-sm text-on-surface">{lead.businessCategory || 'Not specified'}</p>
+                <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-1.5">Category</p>
+                <p className="font-semibold text-[15px] text-slate-900">{lead.businessCategory || 'Not specified'}</p>
               </div>
               <div>
-                <p className="text-xs font-label text-on-surface-variant mb-1">Phone</p>
-                <p className="font-medium text-sm text-on-surface">{lead.phone || 'Not specified'}</p>
+                <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-1.5">Phone</p>
+                <p className="font-semibold text-[15px] text-slate-900">{lead.phone || 'Not specified'}</p>
               </div>
               <div className="col-span-2">
-                <p className="text-xs font-label text-on-surface-variant mb-1">Address</p>
-                <p className="font-medium text-sm text-on-surface">{lead.businessAddress || 'Not specified'}</p>
+                <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-1.5">Address</p>
+                <p className="font-semibold text-[15px] text-slate-900">{lead.businessAddress || 'Not specified'}</p>
               </div>
               <div className="col-span-2">
-                <p className="text-xs font-label text-on-surface-variant mb-1">Description / Notes</p>
-                <p className="font-medium text-sm text-on-surface bg-surface-container-low/50 p-4 rounded-lg mt-1 whitespace-pre-wrap">
-                  {lead.businessDescription || 'No description provided.'}
-                </p>
+                <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-1.5">Description / Notes</p>
+                <div className="bg-slate-50/50 border border-slate-100 p-5 rounded-[16px] mt-2">
+                  <p className="font-medium text-[14px] text-slate-700 whitespace-pre-wrap leading-relaxed">
+                    {lead.businessDescription || 'No description provided.'}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-surface-container-lowest border border-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-bold text-on-surface mb-6 border-b border-outline-variant/30 pb-3">Required Services</h3>
+          <div className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-8">
+            <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight mb-6 border-b border-slate-100 pb-4">Required Services</h3>
             {lead.requiredServices.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {lead.requiredServices.map(service => (
-                  <span key={service} className="px-3 py-1 bg-primary-container/30 text-on-primary-container rounded-lg text-xs font-bold border border-primary-container/50">
+                  <span key={service} className="px-3.5 py-1.5 bg-[#abc4ff]/10 text-slate-800 rounded-[8px] text-[12px] font-bold border border-[#abc4ff]/30 shadow-[inset_0_1px_1px_rgba(255,255,255,1)]">
                     {service.replace(/_/g, ' ')}
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-on-surface-variant">No specific services selected.</p>
+              <p className="text-[14px] font-medium text-slate-400">No specific services selected.</p>
             )}
           </div>
           
           {/* Associated Tasks */}
-          <div className="bg-surface-container-lowest border border-white rounded-xl shadow-sm overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-outline-variant/30">
-              <h3 className="text-lg font-bold text-on-surface">Associated Tasks</h3>
+          <div className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] overflow-hidden">
+            <div className="p-8 border-b border-slate-100 bg-slate-50/30">
+              <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight">Associated Tasks</h3>
             </div>
             {lead.tasks.length > 0 ? (
-              <div className="divide-y divide-outline-variant/20">
+              <div className="divide-y divide-slate-100">
                 {lead.tasks.map(task => (
-                  <div key={task.id} className="p-4 hover:bg-surface-container-low/30 transition-colors flex justify-between items-center">
+                  <div key={task.id} className="p-6 hover:bg-slate-50/80 transition-colors flex justify-between items-center group">
                     <div>
-                      <p className="font-bold text-sm text-on-surface">{task.title}</p>
-                      <p className="text-xs text-on-surface-variant mt-0.5">Assigned to: {task.assignedTo?.name || 'Unassigned'}</p>
+                      <p className="font-semibold text-[15px] text-slate-900">{task.title}</p>
+                      <p className="text-[13px] text-slate-500 font-medium mt-1">Assigned to: <span className="text-slate-700 font-semibold">{task.assignedTo?.name || 'Unassigned'}</span></p>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className={`text-xs font-bold px-2 py-1 rounded border ${
-                        task.status === 'COMPLETED' ? 'bg-green-100 text-green-800 border-green-200' :
-                        task.status === 'IN_PROGRESS' ? 'bg-orange-100 text-orange-800 border-orange-200' :
-                        'bg-gray-100 text-gray-800 border-gray-200'
+                    <div className="flex items-center gap-6">
+                      <span className={`text-[11px] font-bold tracking-widest px-2.5 py-1 uppercase rounded-[6px] border ${
+                        task.status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]' :
+                        task.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-700 border-blue-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]' :
+                        'bg-slate-100 text-slate-600 border-slate-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]'
                       }`}>
                         {task.status.replace('_', ' ')}
                       </span>
-                      <Link href={`/dashboard/tasks/${task.id}`} className="text-primary hover:underline text-xs font-bold">
-                        View
+                      <Link href={`/dashboard/tasks/${task.id}`} className="text-[13px] font-semibold text-[#abc4ff] hover:text-slate-900 transition-colors opacity-0 group-hover:opacity-100">
+                        View Details →
                       </Link>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center text-on-surface-variant text-sm">
+              <div className="p-12 text-center text-slate-400 text-[14px] font-medium">
                 No tasks created for this lead yet.
               </div>
             )}
@@ -141,48 +143,48 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         </div>
 
         {/* Right Column: Assets & Meta */}
-        <div className="space-y-6">
-          <div className="bg-surface-container-lowest border border-white rounded-xl shadow-sm p-6">
-            <h3 className="text-sm uppercase tracking-wider font-bold text-on-surface-variant mb-4">Assets & Links</h3>
+        <div className="space-y-8">
+          <div className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-8">
+            <h3 className="text-[12px] uppercase tracking-widest font-bold text-slate-400 mb-6">Assets & Links</h3>
             <div className="space-y-4">
               {lead.driveLink && (
-                <a href={lead.driveLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg hover:bg-surface-container-high transition-colors">
-                  <span className="material-symbols-outlined text-blue-500">folder_shared</span>
+                <a href={lead.driveLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3.5 p-4 bg-slate-50/80 border border-slate-200/60 rounded-[16px] hover:bg-slate-100 transition-colors group">
+                  <span className="material-symbols-outlined text-[#abc4ff] text-[24px]">folder_shared</span>
                   <div className="flex-grow">
-                    <p className="text-sm font-bold text-on-surface">Master Drive</p>
-                    <p className="text-[10px] text-on-surface-variant font-label truncate w-32">Google Drive Folder</p>
+                    <p className="text-[14px] font-semibold text-slate-900">Master Drive</p>
+                    <p className="text-[11px] text-slate-500 font-medium truncate w-32 mt-0.5">Google Drive Folder</p>
                   </div>
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">open_in_new</span>
+                  <span className="material-symbols-outlined text-[18px] text-slate-300 group-hover:text-slate-600 transition-colors">open_in_new</span>
                 </a>
               )}
               {lead.logoLink && (
-                <a href={lead.logoLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg hover:bg-surface-container-high transition-colors">
-                  <span className="material-symbols-outlined text-purple-500">image</span>
+                <a href={lead.logoLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3.5 p-4 bg-slate-50/80 border border-slate-200/60 rounded-[16px] hover:bg-slate-100 transition-colors group">
+                  <span className="material-symbols-outlined text-purple-400 text-[24px]">image</span>
                   <div className="flex-grow">
-                    <p className="text-sm font-bold text-on-surface">Logo File</p>
-                    <p className="text-[10px] text-on-surface-variant font-label truncate w-32">Brand Asset</p>
+                    <p className="text-[14px] font-semibold text-slate-900">Logo File</p>
+                    <p className="text-[11px] text-slate-500 font-medium truncate w-32 mt-0.5">Brand Asset</p>
                   </div>
-                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">open_in_new</span>
+                  <span className="material-symbols-outlined text-[18px] text-slate-300 group-hover:text-slate-600 transition-colors">open_in_new</span>
                 </a>
               )}
               
               {(lead.instagramLink || lead.facebookLink || lead.linkedinLink) && (
-                <div className="pt-4 border-t border-outline-variant/30 mt-4">
-                  <p className="text-xs font-label text-on-surface-variant mb-3">Social Profiles</p>
-                  <div className="flex gap-2">
+                <div className="pt-6 border-t border-slate-100 mt-6">
+                  <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-4">Social Profiles</p>
+                  <div className="flex gap-3">
                     {lead.instagramLink && (
-                      <a href={lead.instagramLink} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center hover:bg-pink-200 transition-colors" title="Instagram">
-                        <span className="material-symbols-outlined text-sm">photo_camera</span>
+                      <a href={lead.instagramLink} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-[14px] bg-pink-50 text-pink-500 flex items-center justify-center hover:bg-pink-100 transition-colors border border-pink-100 shadow-sm" title="Instagram">
+                        <span className="material-symbols-outlined text-[20px]">photo_camera</span>
                       </a>
                     )}
                     {lead.facebookLink && (
-                      <a href={lead.facebookLink} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 transition-colors" title="Facebook">
-                        <span className="material-symbols-outlined text-sm">thumb_up</span>
+                      <a href={lead.facebookLink} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-[14px] bg-blue-50 text-blue-500 flex items-center justify-center hover:bg-blue-100 transition-colors border border-blue-100 shadow-sm" title="Facebook">
+                        <span className="material-symbols-outlined text-[20px]">thumb_up</span>
                       </a>
                     )}
                     {lead.linkedinLink && (
-                      <a href={lead.linkedinLink} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-200 transition-colors" title="LinkedIn">
-                        <span className="material-symbols-outlined text-sm">work</span>
+                      <a href={lead.linkedinLink} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-[14px] bg-sky-50 text-sky-500 flex items-center justify-center hover:bg-sky-100 transition-colors border border-sky-100 shadow-sm" title="LinkedIn">
+                        <span className="material-symbols-outlined text-[20px]">work</span>
                       </a>
                     )}
                   </div>
@@ -190,13 +192,13 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               )}
 
               {lead.brandColors && (
-                <div className="pt-4 border-t border-outline-variant/30 mt-4">
-                  <p className="text-xs font-label text-on-surface-variant mb-2">Brand Colors</p>
-                  <div className="flex gap-2 flex-wrap">
+                <div className="pt-6 border-t border-slate-100 mt-6">
+                  <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-4">Brand Colors</p>
+                  <div className="flex gap-3 flex-wrap">
                     {lead.brandColors.split(',').map(color => (
-                      <div key={color.trim()} className="flex items-center gap-1.5 bg-surface-container-low px-2 py-1 rounded-md border border-outline-variant/50">
-                        <div className="w-3 h-3 rounded-full border border-black/10" style={{ backgroundColor: color.trim() }}></div>
-                        <span className="text-[10px] font-mono text-on-surface-variant">{color.trim()}</span>
+                      <div key={color.trim()} className="flex items-center gap-2 bg-slate-50/80 px-3 py-2 rounded-[10px] border border-slate-200/60 shadow-sm">
+                        <div className="w-4 h-4 rounded-full border border-black/10 shadow-inner" style={{ backgroundColor: color.trim() }}></div>
+                        <span className="text-[12px] font-medium text-slate-700">{color.trim()}</span>
                       </div>
                     ))}
                   </div>
@@ -205,26 +207,26 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
           </div>
 
-          <div className="bg-surface-container-lowest border border-white rounded-xl shadow-sm p-6">
-            <h3 className="text-sm uppercase tracking-wider font-bold text-on-surface-variant mb-4">Meta Data</h3>
-            <div className="space-y-4">
+          <div className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-8">
+            <h3 className="text-[12px] uppercase tracking-widest font-bold text-slate-400 mb-6">Meta Data</h3>
+            <div className="space-y-6">
               <div>
-                <p className="text-xs font-label text-on-surface-variant">Sourced By</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold uppercase">
+                <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-2">Sourced By</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-[10px] bg-[#abc4ff]/20 text-slate-700 border border-[#abc4ff]/30 shadow-[inset_0_1px_1px_rgba(255,255,255,1)] flex items-center justify-center text-[12px] font-bold uppercase">
                     {lead.createdBy.name.charAt(0)}
                   </div>
-                  <p className="text-sm font-medium">{lead.createdBy.name}</p>
+                  <p className="text-[14px] font-semibold text-slate-900">{lead.createdBy.name}</p>
                 </div>
               </div>
               <div>
-                <p className="text-xs font-label text-on-surface-variant">Added On</p>
-                <p className="text-sm font-medium mt-1">{new Date(lead.createdAt).toLocaleString()}</p>
+                <p className="text-[12px] uppercase tracking-widest font-semibold text-slate-400 mb-1">Added On</p>
+                <p className="text-[14px] font-semibold text-slate-900 mt-1">{new Date(lead.createdAt).toLocaleString()}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

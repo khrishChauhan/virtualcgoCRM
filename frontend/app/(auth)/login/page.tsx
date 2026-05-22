@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -57,11 +58,15 @@ export default function LoginPage() {
       {/* Header (Absolute Top) */}
       <header className="absolute top-0 w-full px-8 py-8 z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-b from-[#abc4ff] to-[#8dafff] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_2px_4px_rgba(171,196,255,0.3)]">
-              <span className="material-symbols-outlined text-[16px] text-white">hub</span>
-            </div>
-            <span className="text-[15px] font-bold tracking-tight text-slate-800">VirtualCGO</span>
+          <div className="flex items-center">
+            <Image 
+              src="/logo.png" 
+              alt="VirtualCGO Logo" 
+              width={200} 
+              height={40} 
+              className="h-10 w-auto object-contain" 
+              priority 
+            />
           </div>
           <div className="flex items-center gap-2 text-slate-400">
             <span className="material-symbols-outlined text-[16px]">lock</span>

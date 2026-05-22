@@ -9,7 +9,6 @@ export function LeadForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Multi-select state for services
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>([]);
 
   const toggleService = (service: ServiceType) => {
@@ -55,7 +54,6 @@ export function LeadForm() {
         throw new Error(result.message || 'Failed to create lead');
       }
 
-      // Redirect back to leads list
       router.push('/dashboard/leads');
       router.refresh();
     } catch (err: any) {
@@ -65,58 +63,58 @@ export function LeadForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-surface-container-lowest border border-white rounded-xl shadow-sm p-8 max-w-4xl">
+    <form onSubmit={handleSubmit} className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-10 max-w-4xl transition-all">
       {error && (
-        <div className="mb-6 p-4 bg-error-container text-on-error-container rounded-lg border border-error/20 flex items-start gap-3">
-          <span className="material-symbols-outlined text-error mt-0.5">error</span>
-          <p className="text-sm font-medium">{error}</p>
+        <div className="mb-8 p-4 bg-red-50/80 text-red-800 rounded-[14px] border border-red-100/50 flex items-start gap-3 shadow-sm">
+          <span className="material-symbols-outlined text-red-500 mt-0.5 text-[18px]">error</span>
+          <p className="text-[13px] font-medium leading-relaxed">{error}</p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
         {/* Core Identity */}
-        <div className="md:col-span-2 border-b border-outline-variant/30 pb-4 mb-2">
-          <h3 className="text-lg font-bold text-on-surface">Client Identity</h3>
-          <p className="text-xs text-on-surface-variant">Basic contact and business information.</p>
+        <div className="md:col-span-2 border-b border-slate-200/60 pb-5 mb-2">
+          <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight">Client Identity</h3>
+          <p className="text-[13px] text-slate-500 font-medium mt-1">Basic contact and business information.</p>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Owner/Contact Name *</label>
-          <input required name="ownerName" type="text" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="John Doe" />
+          <label className="text-[13px] font-medium text-slate-700">Owner/Contact Name *</label>
+          <input required name="ownerName" type="text" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="John Doe" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Business Email *</label>
-          <input required name="businessEmail" type="email" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="john@company.com" />
+          <label className="text-[13px] font-medium text-slate-700">Business Email *</label>
+          <input required name="businessEmail" type="email" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="john@company.com" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Phone Number</label>
-          <input name="phone" type="tel" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="+1 (555) 000-0000" />
+          <label className="text-[13px] font-medium text-slate-700">Phone Number</label>
+          <input name="phone" type="tel" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="+1 (555) 000-0000" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Business Category</label>
-          <input name="businessCategory" type="text" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="e.g. Real Estate, E-commerce" />
+          <label className="text-[13px] font-medium text-slate-700">Business Category</label>
+          <input name="businessCategory" type="text" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="e.g. Real Estate, E-commerce" />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-bold text-on-surface-variant">Business Address</label>
-          <input name="businessAddress" type="text" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Full physical address if applicable" />
+          <label className="text-[13px] font-medium text-slate-700">Business Address</label>
+          <input name="businessAddress" type="text" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="Full physical address if applicable" />
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-bold text-on-surface-variant">Business Description</label>
-          <textarea name="businessDescription" rows={3} className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm resize-none" placeholder="What does this business do? What are their goals?"></textarea>
+          <label className="text-[13px] font-medium text-slate-700">Business Description</label>
+          <textarea name="businessDescription" rows={3} className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] resize-none" placeholder="What does this business do? What are their goals?"></textarea>
         </div>
 
         {/* Services Needed */}
-        <div className="md:col-span-2 border-b border-outline-variant/30 pb-4 mt-4 mb-2">
-          <h3 className="text-lg font-bold text-on-surface">Required Services</h3>
-          <p className="text-xs text-on-surface-variant">Select all services the client is interested in.</p>
+        <div className="md:col-span-2 border-b border-slate-200/60 pb-5 mt-4 mb-2">
+          <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight">Required Services</h3>
+          <p className="text-[13px] text-slate-500 font-medium mt-1">Select all services the client is interested in.</p>
         </div>
 
-        <div className="md:col-span-2 flex flex-wrap gap-2">
+        <div className="md:col-span-2 flex flex-wrap gap-2.5">
           {Object.keys(ServiceType).map((service) => {
             const isSelected = selectedServices.includes(service as ServiceType);
             return (
@@ -124,10 +122,10 @@ export function LeadForm() {
                 key={service}
                 type="button"
                 onClick={() => toggleService(service as ServiceType)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
+                className={`px-4 py-2 rounded-[10px] text-[12px] font-semibold transition-all duration-200 border ${
                   isSelected 
-                    ? 'bg-primary text-on-primary border-primary' 
-                    : 'bg-surface-container-low text-on-surface-variant border-outline-variant/30 hover:border-outline-variant'
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-[0_2px_8px_rgba(15,23,42,0.15)]' 
+                    : 'bg-white text-slate-600 border-slate-200 shadow-sm hover:border-slate-300 hover:bg-slate-50'
                 }`}
               >
                 {service.replace(/_/g, ' ')}
@@ -137,57 +135,57 @@ export function LeadForm() {
         </div>
 
         {/* Assets & Links */}
-        <div className="md:col-span-2 border-b border-outline-variant/30 pb-4 mt-4 mb-2">
-          <h3 className="text-lg font-bold text-on-surface">Assets & Links</h3>
-          <p className="text-xs text-on-surface-variant">Brand materials and social profiles.</p>
+        <div className="md:col-span-2 border-b border-slate-200/60 pb-5 mt-4 mb-2">
+          <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight">Assets & Links</h3>
+          <p className="text-[13px] text-slate-500 font-medium mt-1">Brand materials and social profiles.</p>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Brand Colors</label>
-          <input name="brandColors" type="text" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="e.g. #FF0000, #00FF00" />
+          <label className="text-[13px] font-medium text-slate-700">Brand Colors</label>
+          <input name="brandColors" type="text" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="e.g. #FF0000, #00FF00" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Logo Link</label>
-          <input name="logoLink" type="url" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="https://..." />
+          <label className="text-[13px] font-medium text-slate-700">Logo Link</label>
+          <input name="logoLink" type="url" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="https://..." />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Google Drive Link (Master Folder)</label>
-          <input name="driveLink" type="url" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="https://drive.google.com/..." />
+          <label className="text-[13px] font-medium text-slate-700">Google Drive Link (Master Folder)</label>
+          <input name="driveLink" type="url" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="https://drive.google.com/..." />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Instagram</label>
-          <input name="instagramLink" type="url" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="https://instagram.com/..." />
+          <label className="text-[13px] font-medium text-slate-700">Instagram</label>
+          <input name="instagramLink" type="url" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="https://instagram.com/..." />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Facebook</label>
-          <input name="facebookLink" type="url" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="https://facebook.com/..." />
+          <label className="text-[13px] font-medium text-slate-700">Facebook</label>
+          <input name="facebookLink" type="url" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="https://facebook.com/..." />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">LinkedIn</label>
-          <input name="linkedinLink" type="url" className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="https://linkedin.com/..." />
+          <label className="text-[13px] font-medium text-slate-700">LinkedIn</label>
+          <input name="linkedinLink" type="url" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="https://linkedin.com/..." />
         </div>
       </div>
 
-      <div className="mt-10 flex justify-end gap-4 border-t border-outline-variant/30 pt-6">
+      <div className="mt-12 flex justify-end gap-3 pt-8 border-t border-slate-200/60">
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2.5 rounded-lg font-bold text-on-surface-variant hover:bg-surface-container-high transition-colors"
+          className="px-6 py-3 rounded-[12px] text-[14px] font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-2.5 bg-primary text-on-primary rounded-lg font-bold shadow-sm hover:opacity-90 transition-opacity disabled:opacity-70 flex items-center gap-2"
+          className="relative flex items-center justify-center gap-2 rounded-[12px] bg-[#0f172a] px-8 py-3 text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
         >
           {isSubmitting ? (
-            <><span className="material-symbols-outlined animate-spin text-sm">refresh</span> Creating...</>
+            <><span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Creating...</>
           ) : (
             'Create Lead'
           )}

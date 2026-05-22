@@ -23,18 +23,18 @@ export function TaskDashboardClient({ initialTasks, userRole }: TaskDashboardCli
   });
 
   return (
-    <>
-      <div className="flex justify-between items-center mb-8">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+      <div className="flex justify-between items-center mb-12">
         <div>
-          <h2 className="text-3xl font-black text-primary tracking-tight">Task Management</h2>
-          <p className="text-on-surface-variant font-medium mt-1">Manage and track all operational tasks.</p>
+          <h2 className="text-[28px] font-semibold tracking-tight text-slate-900">Task Management</h2>
+          <p className="text-[15px] text-slate-500 font-medium mt-1">Manage and track all operational tasks.</p>
         </div>
         {(userRole === 'TECH_ADMIN' || userRole === 'SUPER_ADMIN') && (
           <Link
             href="/dashboard/tasks/new"
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+            className="relative flex items-center justify-center gap-2 rounded-[12px] bg-[#0f172a] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98]"
           >
-            <span className="material-symbols-outlined text-sm">add</span>
+            <span className="material-symbols-outlined text-[18px]">add</span>
             Create Task
           </Link>
         )}
@@ -42,26 +42,28 @@ export function TaskDashboardClient({ initialTasks, userRole }: TaskDashboardCli
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-white">
-          <p className="text-sm font-label text-on-surface-variant">Total Tasks</p>
-          <h3 className="text-2xl font-black text-on-surface mt-2">{filteredTasks.length}</h3>
+        <div className="group relative overflow-hidden rounded-[20px] bg-white/70 p-5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] backdrop-blur-2xl transition-all duration-500 hover:shadow-[0_4px_8px_rgba(0,0,0,0.02),0_16px_56px_rgba(171,196,255,0.08)] border border-slate-200/60">
+          <p className="text-[13px] font-medium text-slate-500">Total Tasks</p>
+          <h3 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">{filteredTasks.length}</h3>
         </div>
-        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-white">
-          <p className="text-sm font-label text-on-surface-variant">Pending</p>
-          <h3 className="text-2xl font-black text-on-surface mt-2">{filteredTasks.filter(t => t.status === 'PENDING').length}</h3>
+        <div className="group relative overflow-hidden rounded-[20px] bg-white/70 p-5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] backdrop-blur-2xl transition-all duration-500 hover:shadow-[0_4px_8px_rgba(0,0,0,0.02),0_16px_56px_rgba(171,196,255,0.08)] border border-slate-200/60">
+          <p className="text-[13px] font-medium text-slate-500">Pending</p>
+          <h3 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">{filteredTasks.filter(t => t.status === 'PENDING').length}</h3>
         </div>
-        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-white">
-          <p className="text-sm font-label text-on-surface-variant">In Progress / Review</p>
-          <h3 className="text-2xl font-black text-on-surface mt-2">{filteredTasks.filter(t => t.status === 'IN_PROGRESS' || t.status === 'REVIEW').length}</h3>
+        <div className="group relative overflow-hidden rounded-[20px] bg-white/70 p-5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] backdrop-blur-2xl transition-all duration-500 hover:shadow-[0_4px_8px_rgba(0,0,0,0.02),0_16px_56px_rgba(171,196,255,0.08)] border border-slate-200/60">
+          <p className="text-[13px] font-medium text-slate-500">In Progress / Review</p>
+          <h3 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">{filteredTasks.filter(t => t.status === 'IN_PROGRESS' || t.status === 'REVIEW').length}</h3>
         </div>
-        <div className="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-white">
-          <p className="text-sm font-label text-on-surface-variant">Completed</p>
-          <h3 className="text-2xl font-black text-on-surface mt-2">{filteredTasks.filter(t => t.status === 'COMPLETED').length}</h3>
+        <div className="group relative overflow-hidden rounded-[20px] bg-white/70 p-5 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] backdrop-blur-2xl transition-all duration-500 hover:shadow-[0_4px_8px_rgba(0,0,0,0.02),0_16px_56px_rgba(171,196,255,0.08)] border border-slate-200/60">
+          <p className="text-[13px] font-medium text-slate-500">Completed</p>
+          <h3 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">{filteredTasks.filter(t => t.status === 'COMPLETED').length}</h3>
         </div>
       </div>
 
       <TaskFilters />
-      <TaskTable tasks={filteredTasks} userRole={userRole} />
-    </>
+      <div className="mt-6">
+        <TaskTable tasks={filteredTasks} userRole={userRole} />
+      </div>
+    </div>
   );
 }

@@ -35,11 +35,11 @@ export default async function LeadsPage() {
   });
 
   return (
-    <>
-      <div className="flex justify-between items-center mb-8">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+      <div className="flex justify-between items-center mb-12">
         <div>
-          <h2 className="text-3xl font-black text-primary tracking-tight">Lead Management</h2>
-          <p className="text-on-surface-variant font-medium mt-1">
+          <h2 className="text-[28px] font-semibold tracking-tight text-slate-900">Lead Management</h2>
+          <p className="text-[15px] text-slate-500 font-medium mt-1">
             {user.role === Role.SALES_ADMIN 
               ? 'Manage the leads you have sourced.' 
               : 'Overview of all active client opportunities.'}
@@ -48,15 +48,15 @@ export default async function LeadsPage() {
         {user.role === Role.SALES_ADMIN && (
           <Link
             href="/dashboard/leads/new"
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+            className="relative flex items-center justify-center gap-2 rounded-[12px] bg-[#0f172a] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98]"
           >
-            <span className="material-symbols-outlined text-sm">add</span>
+            <span className="material-symbols-outlined text-[18px]">add</span>
             Create Lead
           </Link>
         )}
       </div>
 
       <LeadTable leads={leads as any} userRole={user.role} />
-    </>
+    </div>
   );
 }

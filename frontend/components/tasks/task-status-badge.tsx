@@ -3,11 +3,11 @@ import { TaskStatus } from '@prisma/client';
 
 export function TaskStatusBadge({ status }: { status: TaskStatus }) {
   const styles = {
-    PENDING: 'bg-surface-variant text-on-surface-variant border-outline-variant',
-    IN_PROGRESS: 'bg-primary-container text-on-primary-container border-primary/20',
-    REVIEW: 'bg-tertiary-container text-on-tertiary-container border-tertiary-container',
-    COMPLETED: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800',
-    CANCELLED: 'bg-error-container text-on-error-container border-error/20',
+    PENDING: 'bg-slate-100 text-slate-600 border-slate-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+    IN_PROGRESS: 'bg-blue-50 text-blue-700 border-blue-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+    REVIEW: 'bg-purple-50 text-purple-700 border-purple-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+    COMPLETED: 'bg-emerald-50 text-emerald-700 border-emerald-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+    CANCELLED: 'bg-red-50 text-red-700 border-red-200/60 shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
   };
 
   const labels = {
@@ -19,7 +19,7 @@ export function TaskStatusBadge({ status }: { status: TaskStatus }) {
   };
 
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${styles[status]}`}>
+    <span className={`px-2.5 py-1 text-[10px] font-bold tracking-widest uppercase rounded-[6px] border ${styles[status]}`}>
       {labels[status]}
     </span>
   );

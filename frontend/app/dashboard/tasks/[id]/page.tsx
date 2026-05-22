@@ -52,15 +52,15 @@ export default async function TaskDetailPage({ params }: { params: Promise<{ id:
   const backLink = user.role === Role.STAFF ? '/dashboard/my-tasks' : '/dashboard/tasks';
 
   return (
-    <>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
       <div className="mb-8">
-        <Link href={backLink} className="text-sm font-bold text-primary hover:underline flex items-center gap-1 mb-4 w-fit">
-          <span className="material-symbols-outlined text-sm">arrow_back</span>
+        <Link href={backLink} className="text-[13px] font-semibold text-[#abc4ff] hover:text-slate-900 transition-colors flex items-center gap-1.5 w-fit">
+          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           Back to Tasks
         </Link>
       </div>
       
       <TaskDetailClient task={task} userRole={user.role} />
-    </>
+    </div>
   );
 }

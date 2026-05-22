@@ -38,17 +38,17 @@ export default async function NewTaskPage({ searchParams }: { searchParams: Prom
   });
 
   return (
-    <>
-      <div className="mb-8">
-        <Link href="/dashboard/tasks" className="text-sm font-bold text-primary hover:underline flex items-center gap-1 mb-4">
-          <span className="material-symbols-outlined text-sm">arrow_back</span>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+      <div className="mb-12">
+        <Link href="/dashboard/tasks" className="text-[13px] font-semibold text-[#abc4ff] hover:text-slate-900 transition-colors flex items-center gap-1.5 mb-6">
+          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           Back to Tasks
         </Link>
-        <h2 className="text-3xl font-black text-primary tracking-tight">Create New Task</h2>
-        <p className="text-on-surface-variant font-medium mt-1">Assign a new operational task to a staff member.</p>
+        <h2 className="text-[28px] font-semibold tracking-tight text-slate-900">Create New Task</h2>
+        <p className="text-[15px] text-slate-500 font-medium mt-1">Assign a new operational task to a staff member.</p>
       </div>
 
       <TaskForm leads={leads} staff={staff} prefilledLeadId={leadId} />
-    </>
+    </div>
   );
 }

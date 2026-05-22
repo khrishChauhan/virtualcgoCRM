@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Role } from '@prisma/client';
 
 interface UserFormProps {
-  // If true, forces the role to STAFF and hides the role dropdown
   staffOnly?: boolean;
 }
 
@@ -40,7 +39,6 @@ export function UserForm({ staffOnly = false }: UserFormProps) {
         throw new Error(result.message || 'Failed to create user');
       }
 
-      // Redirect back
       if (staffOnly) {
         router.push('/dashboard/staff');
       } else {
@@ -54,35 +52,35 @@ export function UserForm({ staffOnly = false }: UserFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-surface-container-lowest border border-white rounded-xl shadow-sm p-8 max-w-2xl">
+    <form onSubmit={handleSubmit} className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-10 max-w-2xl transition-all">
       {error && (
-        <div className="mb-6 p-4 bg-error-container text-on-error-container rounded-lg border border-error/20 flex items-start gap-3">
-          <span className="material-symbols-outlined text-error mt-0.5">error</span>
-          <p className="text-sm font-medium">{error}</p>
+        <div className="mb-8 p-4 bg-red-50/80 text-red-800 rounded-[14px] border border-red-100/50 flex items-start gap-3 shadow-sm">
+          <span className="material-symbols-outlined text-red-500 mt-0.5 text-[18px]">error</span>
+          <p className="text-[13px] font-medium leading-relaxed">{error}</p>
         </div>
       )}
 
       <div className="space-y-6">
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Full Name *</label>
-          <input required name="name" type="text" className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="John Doe" />
+          <label className="text-[13px] font-medium text-slate-700">Full Name *</label>
+          <input required name="name" type="text" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="John Doe" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Email Address *</label>
-          <input required name="email" type="email" className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="john@company.com" />
+          <label className="text-[13px] font-medium text-slate-700">Email Address *</label>
+          <input required name="email" type="email" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="john@company.com" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold text-on-surface-variant">Password *</label>
-          <input required name="password" type="text" minLength={6} className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Minimum 6 characters" />
-          <p className="text-xs text-on-surface-variant mt-1">Make sure to securely share this password with the user.</p>
+          <label className="text-[13px] font-medium text-slate-700">Password *</label>
+          <input required name="password" type="text" minLength={6} className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="Minimum 6 characters" />
+          <p className="text-[12px] text-slate-500 font-medium mt-1.5 ml-1">Securely share this password with the user.</p>
         </div>
 
         {!staffOnly && (
           <div className="space-y-2">
-            <label className="text-sm font-bold text-on-surface-variant">Role *</label>
-            <select required name="role" defaultValue={Role.STAFF} className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm">
+            <label className="text-[13px] font-medium text-slate-700">Role *</label>
+            <select required name="role" defaultValue={Role.STAFF} className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] appearance-none">
               <option value={Role.STAFF}>Staff (Task Execution)</option>
               <option value={Role.SALES_ADMIN}>Sales Admin (Lead Generation)</option>
               <option value={Role.TECH_ADMIN}>Tech Admin (Operations Management)</option>
@@ -92,21 +90,21 @@ export function UserForm({ staffOnly = false }: UserFormProps) {
         )}
       </div>
 
-      <div className="mt-10 flex justify-end gap-4 border-t border-outline-variant/30 pt-6">
+      <div className="mt-12 flex justify-end gap-3 pt-8 border-t border-slate-200/60">
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2.5 rounded-lg font-bold text-on-surface-variant hover:bg-surface-container-high transition-colors"
+          className="px-6 py-3 rounded-[12px] text-[14px] font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-2.5 bg-primary text-on-primary rounded-lg font-bold shadow-sm hover:opacity-90 transition-opacity disabled:opacity-70 flex items-center gap-2"
+          className="relative flex items-center justify-center gap-2 rounded-[12px] bg-[#0f172a] px-8 py-3 text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
         >
           {isSubmitting ? (
-            <><span className="material-symbols-outlined animate-spin text-sm">refresh</span> Creating...</>
+            <><span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Creating...</>
           ) : (
             'Create User'
           )}

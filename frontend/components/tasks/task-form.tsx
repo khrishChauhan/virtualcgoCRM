@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ServiceType } from '@prisma/client';
 
 interface LeadOption {
   id: string;
@@ -12,6 +13,7 @@ interface LeadOption {
 interface StaffOption {
   id: string;
   name: string;
+  email?: string;
 }
 
 interface TaskFormProps {
@@ -27,18 +29,17 @@ export function TaskForm({ leads, staff, prefilledLeadId }: TaskFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setError(null);
+    setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
     const data = {
       title: formData.get('title'),
-      leadId: formData.get('leadId'),
-      assignedToId: formData.get('assignedToId'),
-      serviceType: formData.get('serviceType'),
-      deadline: formData.get('deadline'),
       description: formData.get('description'),
-      notes: formData.get('notes'),
+      serviceType: formData.get('serviceType'),
+      leadId: formData.get('leadId'),
+      assignedToId: formData.get('assignedToId') || null, 
+      deadline: formData.get('deadline') ? new Date(formData.get('deadline') as string).toISOString() : null,
     };
 
     try {
@@ -49,7 +50,10 @@ export function TaskForm({ leads, staff, prefilledLeadId }: TaskFormProps) {
       });
 
       const result = await res.json();
-      if (!res.ok) throw new Error(result.message || 'Failed to create task');
+
+      if (!res.ok) {
+        throw new Error(result.message || 'Failed to create task');
+      }
 
       router.push('/dashboard/tasks');
       router.refresh();
@@ -60,31 +64,29 @@ export function TaskForm({ leads, staff, prefilledLeadId }: TaskFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-2xl bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-white">
+    <form onSubmit={handleSubmit} className="rounded-[24px] bg-white/70 backdrop-blur-2xl border border-slate-200/60 shadow-[0_2px_4px_rgba(0,0,0,0.02),0_12px_48px_rgba(171,196,255,0.05)] p-10 max-w-4xl transition-all">
       {error && (
-        <div className="p-4 bg-error-container text-on-error-container rounded-lg text-sm font-medium">
-          {error}
+        <div className="mb-8 p-4 bg-red-50/80 text-red-800 rounded-[14px] border border-red-100/50 flex items-start gap-3 shadow-sm">
+          <span className="material-symbols-outlined text-red-500 mt-0.5 text-[18px]">error</span>
+          <p className="text-[13px] font-medium leading-relaxed">{error}</p>
         </div>
       )}
 
-      <div>
-        <label className="block text-sm font-bold text-on-surface-variant mb-2">Task Title *</label>
-        <input
-          required
-          name="title"
-          className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm"
-          placeholder="e.g. Design homepage mockup"
-        />
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+        
+        {/* Assignment & Linkage */}
+        <div className="md:col-span-2 border-b border-slate-200/60 pb-5 mb-2">
+          <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight">Task Assignment</h3>
+          <p className="text-[13px] text-slate-500 font-medium mt-1">Link this task to a client lead and optionally assign a staff member.</p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-bold text-on-surface-variant mb-2">Assign to Lead / Client *</label>
+        <div className="space-y-2">
+          <label className="text-[13px] font-medium text-slate-700">Client / Lead *</label>
           <select 
             required 
             name="leadId" 
             defaultValue={prefilledLeadId || ""}
-            className="w-full px-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm"
+            className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] appearance-none"
           >
             <option value="" disabled>Select a lead...</option>
             {leads.map((l) => (
@@ -92,79 +94,71 @@ export function TaskForm({ leads, staff, prefilledLeadId }: TaskFormProps) {
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-sm font-bold text-on-surface-variant mb-2">Service Type *</label>
-          <select required name="serviceType" className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
-            <option value="">Select Service</option>
-            <option value="SOCIAL_MEDIA_MANAGEMENT">Social Media Management</option>
-            <option value="CONTENT_CREATION">Content Creation</option>
-            <option value="GRAPHIC_DESIGN">Graphic Design</option>
-            <option value="VIDEO_EDITING">Video Editing</option>
-            <option value="SEO">SEO</option>
-            <option value="PAID_ADS">Paid Ads</option>
-            <option value="WEB_DEVELOPMENT">Web Development</option>
-            <option value="EMAIL_MARKETING">Email Marketing</option>
-            <option value="BRANDING">Branding</option>
-            <option value="PHOTOGRAPHY">Photography</option>
-            <option value="OTHER">Other</option>
-          </select>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-bold text-on-surface-variant mb-2">Assign to Staff *</label>
-          <select required name="assignedToId" className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
-            <option value="">Select Staff Member</option>
+        <div className="space-y-2">
+          <label className="text-[13px] font-medium text-slate-700">Assign to Staff Member (Optional)</label>
+          <select 
+            name="assignedToId" 
+            defaultValue=""
+            className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] appearance-none"
+          >
+            <option value="">Leave Unassigned</option>
             {staff.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
+              <option key={s.id} value={s.id}>{s.name} {s.email ? `(${s.email})` : ''}</option>
             ))}
           </select>
         </div>
-        <div>
-          <label className="block text-sm font-bold text-on-surface-variant mb-2">Deadline</label>
-          <input
-            type="date"
-            name="deadline"
-            className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm"
-          />
+
+        {/* Task Details */}
+        <div className="md:col-span-2 border-b border-slate-200/60 pb-5 mt-4 mb-2">
+          <h3 className="text-[18px] font-semibold text-slate-900 tracking-tight">Task Details</h3>
+          <p className="text-[13px] text-slate-500 font-medium mt-1">Specify what needs to be done.</p>
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <label className="text-[13px] font-medium text-slate-700">Task Title *</label>
+          <input required name="title" type="text" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" placeholder="e.g. Design Logo Concepts" />
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <label className="text-[13px] font-medium text-slate-700">Detailed Instructions *</label>
+          <textarea required name="description" rows={5} className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] resize-none" placeholder="Provide full context, constraints, and requirements..."></textarea>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[13px] font-medium text-slate-700">Service Category *</label>
+          <select required name="serviceType" defaultValue="" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)] appearance-none">
+            <option value="" disabled>Select a category...</option>
+            {Object.keys(ServiceType).map((type) => (
+              <option key={type} value={type}>{type.replace(/_/g, ' ')}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[13px] font-medium text-slate-700">Deadline (Optional)</label>
+          <input name="deadline" type="date" className="w-full rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] text-slate-900 outline-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] placeholder:text-slate-400 hover:bg-slate-50 focus:border-[#abc4ff] focus:bg-white focus:shadow-[0_0_0_3px_rgba(171,196,255,0.25)]" />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-bold text-on-surface-variant mb-2">Description</label>
-        <textarea
-          name="description"
-          rows={3}
-          className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm resize-none"
-          placeholder="Detailed task description..."
-        ></textarea>
-      </div>
-
-      <div>
-        <label className="block text-sm font-bold text-on-surface-variant mb-2">Internal Notes</label>
-        <textarea
-          name="notes"
-          rows={2}
-          className="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm resize-none"
-          placeholder="Any special instructions or notes..."
-        ></textarea>
-      </div>
-
-      <div className="flex justify-end gap-4 mt-4">
+      <div className="mt-12 flex justify-end gap-3 pt-8 border-t border-slate-200/60">
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-3 font-bold text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors text-sm"
+          className="px-6 py-3 rounded-[12px] text-[14px] font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity text-sm disabled:opacity-50"
+          className="relative flex items-center justify-center gap-2 rounded-[12px] bg-[#0f172a] px-8 py-3 text-[14px] font-semibold text-white shadow-[0_2px_8px_rgba(15,23,42,0.2),inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#1e293b] hover:shadow-[0_4px_12px_rgba(15,23,42,0.25),inset_0_1px_1px_rgba(255,255,255,0.15)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
         >
-          {isSubmitting ? 'Creating...' : 'Create Task'}
+          {isSubmitting ? (
+            <><span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span> Creating...</>
+          ) : (
+            'Create Task'
+          )}
         </button>
       </div>
     </form>
