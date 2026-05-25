@@ -1,9 +1,4 @@
-# VirtualCGO — CRM & Agency Operations Platform
 
-> **Unified Full-Stack Next.js Application**
-> One codebase · One command · One Vercel deployment
-
----
 
 ## Project Structure
 
