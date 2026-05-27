@@ -1,10 +1,5 @@
 /**
- * types/auth.ts — Shared authentication TypeScript types
- *
- * These types are imported by both the API layer (Route Handlers)
- * and the Edge middleware — keeping them in a dedicated types/ folder
- * makes them easy to import from anywhere in the project.
- */
+
 
 import type { Role } from '@prisma/client';
 
