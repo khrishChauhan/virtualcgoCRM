@@ -13,9 +13,6 @@ export interface AuthUser {
   role: Role;
 }
 
-/**
- * The full response body returned by POST /api/auth/login.
- */
 export interface LoginResponse {
   user: AuthUser;
 }
