@@ -4,7 +4,6 @@ export interface JwtPayload {
   role: Role;
 }
 
-// ─── Auth responses ───────────────────────────────────────────────────────────
 
 /**
  * Safe user object returned after successful login.
