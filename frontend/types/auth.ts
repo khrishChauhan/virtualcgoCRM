@@ -3,7 +3,6 @@
 
 import type { Role } from '@prisma/client';
 
-// ─── JWT ──────────────────────────────────────────────────────────────────────
 
 /**
  * The payload embedded inside the JWT token.
