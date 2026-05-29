@@ -5,10 +5,7 @@ export interface JwtPayload {
 }
 
 
-/**
- * Safe user object returned after successful login.
- * Never includes the password hash.
- */
+
 export interface AuthUser {
   id: string;
   name: string;
