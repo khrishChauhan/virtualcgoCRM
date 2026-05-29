@@ -1,9 +1,3 @@
-
-
-/**
- * The payload embedded inside the JWT token.
- * Must remain small — it is sent with every request as a cookie.
- */
 export interface JwtPayload {
   userId: string;
   email: string;
